@@ -113,7 +113,7 @@ class _ExampleAlarmEditScreenState extends State<ExampleAlarmEditScreen> {
   }
 
   void deleteAlarm() {
-    Alarm.stop(widget.alarmSettings!.id).then((res) {
+    Alarm.stop(widget.alarmSettings!).then((res) {
       if (res) Navigator.pop(context, true);
     });
   }

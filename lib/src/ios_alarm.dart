@@ -62,7 +62,7 @@ class IOSAlarm {
 
       if (!res) return false;
     } catch (e) {
-      await Alarm.stop(id);
+      await Alarm.stop(settings);
       throw AlarmException(e.toString());
     }
 

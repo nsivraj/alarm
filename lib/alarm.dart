@@ -54,7 +54,7 @@ class Alarm {
         await set(alarmSettings: alarm);
       } else {
         final isRinging = await Alarm.isRinging(alarm.id);
-        isRinging ? ringStream.add(alarm) : await stop(alarm.id);
+        isRinging ? ringStream.add(alarm) : await stop(alarm);
       }
     }
   }
@@ -69,7 +69,7 @@ class Alarm {
     for (final alarm in Alarm.getAlarms()) {
       if (alarm.id == alarmSettings.id ||
           alarm.dateTime.isSameSecond(alarmSettings.dateTime)) {
-        await Alarm.stop(alarm.id);
+        await stop(alarm);
       }
     }
 
@@ -136,9 +136,14 @@ class Alarm {
       AlarmStorage.setNotificationContentOnAppKill(title, body);
 
   /// Stops alarm.
-  static Future<bool> stop(int id) async {
+  static Future<bool> stop(AlarmSettings alarm) async {
+    final id = alarm.id;
+    ringStream.add(
+      alarm.copyWith(
+        dateTime: DateTime.fromMillisecondsSinceEpoch(0, isUtc: true),
+      ),
+    );
     await AlarmStorage.unsaveAlarm(id);
-
     return iOS ? await IOSAlarm.stopAlarm(id) : await AndroidAlarm.stop(id);
   }
 
@@ -147,7 +152,7 @@ class Alarm {
     final alarms = AlarmStorage.getSavedAlarms();
 
     for (final alarm in alarms) {
-      await stop(alarm.id);
+      await stop(alarm);
     }
   }
 

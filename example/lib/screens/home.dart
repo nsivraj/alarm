@@ -40,14 +40,17 @@ class _ExampleAlarmHomeScreenState extends State<ExampleAlarmHomeScreen> {
   }
 
   Future<void> navigateToRingScreen(AlarmSettings alarmSettings) async {
-    await Navigator.push(
-      context,
-      MaterialPageRoute<void>(
-        builder: (context) =>
-            ExampleAlarmRingScreen(alarmSettings: alarmSettings),
-      ),
-    );
-    loadAlarms();
+    if (alarmSettings.dateTime !=
+        DateTime.fromMillisecondsSinceEpoch(0, isUtc: true)) {
+      await Navigator.push(
+        context,
+        MaterialPageRoute<void>(
+          builder: (context) =>
+              ExampleAlarmRingScreen(alarmSettings: alarmSettings),
+        ),
+      );
+      loadAlarms();
+    }
   }
 
   Future<void> navigateToAlarmScreen(AlarmSettings? settings) async {
@@ -126,7 +129,7 @@ class _ExampleAlarmHomeScreenState extends State<ExampleAlarmHomeScreen> {
                     ).format(context),
                     onPressed: () => navigateToAlarmScreen(alarms[index]),
                     onDismissed: () {
-                      Alarm.stop(alarms[index].id).then((_) => loadAlarms());
+                      Alarm.stop(alarms[index]).then((_) => loadAlarms());
                     },
                   );
                 },
