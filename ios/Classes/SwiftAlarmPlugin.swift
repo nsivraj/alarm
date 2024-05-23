@@ -13,12 +13,14 @@ public class SwiftAlarmPlugin: NSObject, FlutterPlugin {
     #endif
 
     private var registrar: FlutterPluginRegistrar!
+    private var methodChannel: FlutterMethodChannel!
     static let sharedInstance = SwiftAlarmPlugin()
     static let backgroundTaskIdentifier: String = "com.gdelataillade.fetch"
 
     public static func register(with registrar: FlutterPluginRegistrar) {
-        let channel = FlutterMethodChannel(name: "com.gdelataillade/alarm", binaryMessenger: registrar.messenger())
         let instance = SwiftAlarmPlugin()
+        let channel = FlutterMethodChannel(name: "com.gdelataillade/alarm", binaryMessenger: registrar.messenger())
+        instance.methodChannel = channel
 
         instance.registrar = registrar
         registrar.addMethodCallDelegate(instance, channel: channel)
