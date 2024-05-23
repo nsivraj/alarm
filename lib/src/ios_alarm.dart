@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:alarm/alarm.dart';
+import 'package:alarm/model/alarm_event.dart';
 import 'package:alarm/model/alarm_settings.dart';
 import 'package:alarm/service/alarm_storage.dart';
 import 'package:alarm/utils/alarm_exception.dart';
@@ -13,7 +14,7 @@ class IOSAlarm {
   static const methodChannel = MethodChannel('com.gdelataillade/alarm');
 
   /// Send ring stream events back to the mobile app
-  static late final StreamController<AlarmSettings> ringStream;
+  static late final StreamController<AlarmEvent> ringStream;
 
   /// Map of alarm timers.
   static Map<int, Timer?> timers = {};
@@ -22,10 +23,12 @@ class IOSAlarm {
   static Map<int, StreamSubscription<FGBGType>?> fgbgSubscriptions = {};
 
   /// Call this init method first before setting alarms
-  static void init(StreamController<AlarmSettings> ringStreamParam) {
+  static void init(StreamController<AlarmEvent> ringStreamParam) {
     ringStream = ringStreamParam;
     methodChannel.setMethodCallHandler(_callingThisMethodFromSwift);
   }
+
+  static T? cast<T>(x) => x is T ? x : null;
 
   static Future<dynamic> _callingThisMethodFromSwift(MethodCall call) async {
     switch (call.method) {
@@ -36,20 +39,27 @@ class IOSAlarm {
         print('The arguments are: ${call.arguments}');
         // print(arg2);
 
-        final alarms = AlarmStorage.getSavedAlarms();
+        // final alarms = AlarmStorage.getSavedAlarms();
+        final id = cast<int>(call.arguments['id']);
+        if (id != null) {
+          final alarm = Alarm.getAlarm(id);
 
-        for (final alarm in alarms) {
-          if (alarm.id == call.arguments['id']) {
+          // for (final alarm in alarms) {
+          //   if (alarm.id == call.arguments['id']) {
+          if (alarm != null) {
             print(
-                'Letting the ring stream know about the event of stopping the alarm: ${alarm.id}');
+                'Letting the ring stream know about the event of stopping the alarm: $id');
             ringStream.add(
-              alarm.copyWith(
-                dateTime: DateTime.fromMillisecondsSinceEpoch(0, isUtc: true),
+              AlarmEvent(
+                eventType: AlarmEventType.RingingStopped,
+                alarm: alarm,
               ),
             );
           }
-          // await stop(alarm);
         }
+        //   }
+        //   // await stop(alarm);
+        // }
 
         print('\nOur Native iOS code is calling Flutter method/!!');
         return 'Awesome!!';

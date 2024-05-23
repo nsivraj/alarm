@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:alarm/alarm.dart';
+import 'package:alarm/model/alarm_event.dart';
 import 'package:alarm/model/alarm_settings.dart';
 import 'package:alarm_example/screens/edit_alarm.dart';
 import 'package:alarm_example/screens/ring.dart';
@@ -19,7 +20,7 @@ class ExampleAlarmHomeScreen extends StatefulWidget {
 class _ExampleAlarmHomeScreenState extends State<ExampleAlarmHomeScreen> {
   late List<AlarmSettings> alarms;
 
-  static StreamSubscription<AlarmSettings>? subscription;
+  static StreamSubscription<AlarmEvent>? subscription;
 
   @override
   void initState() {
@@ -39,14 +40,13 @@ class _ExampleAlarmHomeScreenState extends State<ExampleAlarmHomeScreen> {
     });
   }
 
-  Future<void> navigateToRingScreen(AlarmSettings alarmSettings) async {
-    if (alarmSettings.dateTime !=
-        DateTime.fromMillisecondsSinceEpoch(0, isUtc: true)) {
+  Future<void> navigateToRingScreen(AlarmEvent alarmEvent) async {
+    if (alarmEvent.eventType != AlarmEventType.RingingStopped) {
       await Navigator.push(
         context,
         MaterialPageRoute<void>(
           builder: (context) =>
-              ExampleAlarmRingScreen(alarmSettings: alarmSettings),
+              ExampleAlarmRingScreen(alarmSettings: alarmEvent.alarm),
         ),
       );
       loadAlarms();

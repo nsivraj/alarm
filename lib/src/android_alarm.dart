@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:alarm/alarm.dart';
+import 'package:alarm/model/alarm_event.dart';
 import 'package:alarm/model/alarm_settings.dart';
 import 'package:alarm/service/alarm_storage.dart';
 import 'package:alarm/utils/alarm_exception.dart';
@@ -27,7 +28,14 @@ class AndroidAlarm {
           final eventMap = Map<String, dynamic>.from(event as Map);
           final id = eventMap['id'] as int;
           final settings = Alarm.getAlarm(id);
-          if (settings != null) Alarm.ringStream.add(settings);
+          if (settings != null) {
+            Alarm.ringStream.add(
+              AlarmEvent(
+                eventType: AlarmEventType.RingingStopped,
+                alarm: settings,
+              ),
+            );
+          }
         } catch (e) {
           alarmPrint('Error receiving alarm events: $e');
         }

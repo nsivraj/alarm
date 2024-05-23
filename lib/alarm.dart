@@ -2,6 +2,7 @@
 
 import 'dart:async';
 
+import 'package:alarm/model/alarm_event.dart';
 import 'package:alarm/model/alarm_settings.dart';
 import 'package:alarm/service/alarm_storage.dart';
 import 'package:alarm/src/android_alarm.dart';
@@ -22,7 +23,7 @@ class Alarm {
   static bool get android => defaultTargetPlatform == TargetPlatform.android;
 
   /// Stream of the ringing status.
-  static final ringStream = StreamController<AlarmSettings>();
+  static final ringStream = StreamController<AlarmEvent>();
 
   /// Initializes Alarm services.
   ///
@@ -55,7 +56,11 @@ class Alarm {
         await set(alarmSettings: alarm);
       } else {
         final isRinging = await Alarm.isRinging(alarm.id);
-        isRinging ? ringStream.add(alarm) : await stop(alarm);
+        isRinging
+            ? ringStream.add(
+                AlarmEvent(eventType: AlarmEventType.Ringing, alarm: alarm),
+              )
+            : await stop(alarm);
       }
     }
   }
@@ -79,12 +84,22 @@ class Alarm {
     if (iOS) {
       return IOSAlarm.setAlarm(
         alarmSettings,
-        () => ringStream.add(alarmSettings),
+        () => ringStream.add(
+          AlarmEvent(
+            eventType: AlarmEventType.CreateAlarm,
+            alarm: alarmSettings,
+          ),
+        ),
       );
     } else if (android) {
       return AndroidAlarm.set(
         alarmSettings,
-        () => ringStream.add(alarmSettings),
+        () => ringStream.add(
+          AlarmEvent(
+            eventType: AlarmEventType.CreateAlarm,
+            alarm: alarmSettings,
+          ),
+        ),
       );
     }
 
@@ -140,8 +155,9 @@ class Alarm {
   static Future<bool> stop(AlarmSettings alarm) async {
     final id = alarm.id;
     ringStream.add(
-      alarm.copyWith(
-        dateTime: DateTime.fromMillisecondsSinceEpoch(0, isUtc: true),
+      AlarmEvent(
+        eventType: AlarmEventType.RingingStopped,
+        alarm: alarm,
       ),
     );
     await AlarmStorage.unsaveAlarm(id);
