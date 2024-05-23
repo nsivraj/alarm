@@ -36,7 +36,7 @@ class IOSAlarm {
         // Do something
         // final int id = call.arguments['Nepal'];
         // final String arg2 = arguments['UK'];
-        print('The arguments are: ${call.arguments}');
+        // print('The arguments are: ${call.arguments}');
         // print(arg2);
 
         // final alarms = AlarmStorage.getSavedAlarms();
@@ -47,8 +47,8 @@ class IOSAlarm {
           // for (final alarm in alarms) {
           //   if (alarm.id == call.arguments['id']) {
           if (alarm != null) {
-            print(
-                'Letting the ring stream know about the event of stopping the alarm: $id');
+            // print(
+            // 'Letting the ring stream know about the event of stopping the alarm: $id');
             ringStream.add(
               AlarmEvent(
                 eventType: AlarmEventType.RingingStopped,
@@ -61,8 +61,8 @@ class IOSAlarm {
         //   // await stop(alarm);
         // }
 
-        print('\nOur Native iOS code is calling Flutter method/!!');
-        return 'Awesome!!';
+        // print('\nOur Native iOS code is calling Flutter method/!!');
+        return 'success';
       // break;
       default:
         throw PlatformException(

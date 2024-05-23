@@ -31,7 +31,7 @@ class AndroidAlarm {
           if (settings != null) {
             Alarm.ringStream.add(
               AlarmEvent(
-                eventType: AlarmEventType.RingingStopped,
+                eventType: AlarmEventType.Ringing,
                 alarm: settings,
               ),
             );
