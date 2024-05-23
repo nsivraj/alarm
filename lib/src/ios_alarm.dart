@@ -11,7 +11,9 @@ import 'package:flutter_fgbg/flutter_fgbg.dart';
 class IOSAlarm {
   /// Method channel for the alarm.
   static const methodChannel = MethodChannel('com.gdelataillade/alarm');
-  // methodChannel.setMethodCallHandler(_callingThisMethodFromSwift);
+
+  /// Send ring stream events back to the mobile app
+  static late final StreamController<AlarmSettings> ringStream;
 
   /// Map of alarm timers.
   static Map<int, Timer?> timers = {};
@@ -20,7 +22,8 @@ class IOSAlarm {
   static Map<int, StreamSubscription<FGBGType>?> fgbgSubscriptions = {};
 
   /// Call this init method first before setting alarms
-  static void init() {
+  static void init(StreamController<AlarmSettings> ringStreamParam) {
+    ringStream = ringStreamParam;
     methodChannel.setMethodCallHandler(_callingThisMethodFromSwift);
   }
 
@@ -32,6 +35,19 @@ class IOSAlarm {
         // final String arg2 = arguments['UK'];
         print("The arguments are: ${call.arguments}");
         // print(arg2);
+
+        final alarms = AlarmStorage.getSavedAlarms();
+
+        for (final alarm in alarms) {
+          if (alarm.id == call.arguments['id']) {
+            ringStream.add(
+              alarm.copyWith(
+                dateTime: DateTime.fromMillisecondsSinceEpoch(0, isUtc: true),
+              ),
+            );
+          }
+          // await stop(alarm);
+        }
 
         print("\nOur Native iOS code is calling Flutter method/!!");
         return "Awesome!!";
