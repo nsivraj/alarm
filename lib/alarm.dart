@@ -36,6 +36,7 @@ class Alarm {
     };
 
     if (android) AndroidAlarm.init();
+    if (iOS) IOSAlarm.init();
     await AlarmStorage.init();
 
     await checkAlarm();

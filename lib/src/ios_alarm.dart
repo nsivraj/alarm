@@ -11,12 +11,38 @@ import 'package:flutter_fgbg/flutter_fgbg.dart';
 class IOSAlarm {
   /// Method channel for the alarm.
   static const methodChannel = MethodChannel('com.gdelataillade/alarm');
+  // methodChannel.setMethodCallHandler(_callingThisMethodFromSwift);
 
   /// Map of alarm timers.
   static Map<int, Timer?> timers = {};
 
   /// Map of foreground/background subscriptions.
   static Map<int, StreamSubscription<FGBGType>?> fgbgSubscriptions = {};
+
+  /// Call this init method first before setting alarms
+  static void init() {
+    methodChannel.setMethodCallHandler(_callingThisMethodFromSwift);
+  }
+
+  static Future<dynamic> _callingThisMethodFromSwift(MethodCall call) async {
+    switch (call.method) {
+      case 'alarmStopped':
+        // Do something
+        // final int id = call.arguments['Nepal'];
+        // final String arg2 = arguments['UK'];
+        print("The arguments are: ${call.arguments}");
+        // print(arg2);
+
+        print("\nOur Native iOS code is calling Flutter method/!!");
+        return "Awesome!!";
+      // break;
+      default:
+        throw PlatformException(
+          code: 'Unimplemented',
+          details: 'Method ${call.method} not implemented',
+        );
+    }
+  }
 
   /// Calls the native function `setAlarm` and listens to alarm ring state.
   ///

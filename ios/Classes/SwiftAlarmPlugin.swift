@@ -304,6 +304,9 @@ public class SwiftAlarmPlugin: NSObject, FlutterPlugin {
         self.stopSilentSound()
         self.stopNotificationOnKillService()
 
+        NSLog("SwiftAlarmPlugin: Stopping alarm stopAlarm with id: \(id)")
+        self.methodChannel.invokeMethod("alarmStopped", arguments: ["id": id])
+
         result(true)
     }
 
