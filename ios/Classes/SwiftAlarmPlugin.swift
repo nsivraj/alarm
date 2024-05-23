@@ -259,8 +259,8 @@ public class SwiftAlarmPlugin: NSObject, FlutterPlugin {
                     DispatchQueue.main.asyncAfter(deadline: .now() + audioDuration) {
                         self.stopAlarm(id: id, cancelNotif: false, result: { _ in })
                     }
-                } else if alarm.repeatSoundLoops != -1{
-                    let audioDuration = audioPlayer.duration * alarm.repeatSoundLoops
+                } else if alarm.repeatSoundLoops > 0{
+                    let audioDuration = audioPlayer.duration * Double(alarm.repeatSoundLoops)
                     DispatchQueue.main.asyncAfter(deadline: .now() + audioDuration) {
                         self.stopAlarm(id: id, cancelNotif: false, result: { _ in })
                     }
