@@ -25,7 +25,7 @@ class AudioService(private val context: Context) {
         return mediaPlayers.filter { (_, mediaPlayer) -> mediaPlayer.isPlaying }.keys.toList()
     }
 
-    fun playAudio(id: Int, filePath: String, loopAudio: Boolean, fadeDuration: Double?) {
+    fun playAudio(id: Int, filePath: String, loopAudio: Boolean, repeatSoundLoops: Int, fadeDuration: Double?) {
         stopAudio(id) // Stop and release any existing MediaPlayer and Timer for this ID
 
         val baseAppFlutterPath = context.filesDir.parent + "/app_flutter/"
@@ -55,6 +55,9 @@ class AudioService(private val context: Context) {
                 start()
 
                 setOnCompletionListener {
+                    
+                    // TODO: Add logic to count up to repeatSoundLoops and then invoke onAudioComplete
+
                     if (!loopAudio) {
                         onAudioComplete?.invoke()
                     }

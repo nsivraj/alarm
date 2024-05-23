@@ -12,6 +12,7 @@ class AlarmSettings {
     required this.notificationTitle,
     required this.notificationBody,
     this.loopAudio = true,
+    this.repeatSoundLoops = -1,
     this.vibrate = true,
     this.volume,
     this.fadeDuration = 0.0,
@@ -25,6 +26,7 @@ class AlarmSettings {
         dateTime: DateTime.fromMicrosecondsSinceEpoch(json['dateTime'] as int),
         assetAudioPath: json['assetAudioPath'] as String,
         loopAudio: json['loopAudio'] as bool,
+        repeatSoundLoops: json['repeatSoundLoops'] as int,
         vibrate: json['vibrate'] as bool? ?? true,
         volume: json['volume'] as double?,
         fadeDuration: json['fadeDuration'] as double,
@@ -67,6 +69,10 @@ class AlarmSettings {
 
   /// If true, [assetAudioPath] will repeat indefinitely until alarm is stopped.
   final bool loopAudio;
+
+  /// If loopAudio is true then repeatSoundLoops controls the number of times
+  /// the sound will play
+  final int repeatSoundLoops;
 
   /// If true, device will vibrate for 500ms, pause for 500ms and repeat until
   /// alarm is stopped.
@@ -143,6 +149,7 @@ class AlarmSettings {
     DateTime? dateTime,
     String? assetAudioPath,
     bool? loopAudio,
+    int? repeatSoundLoops,
     bool? vibrate,
     double? volume,
     double? fadeDuration,
@@ -156,6 +163,7 @@ class AlarmSettings {
       dateTime: dateTime ?? this.dateTime,
       assetAudioPath: assetAudioPath ?? this.assetAudioPath,
       loopAudio: loopAudio ?? this.loopAudio,
+      repeatSoundLoops: repeatSoundLoops ?? this.repeatSoundLoops,
       vibrate: vibrate ?? this.vibrate,
       volume: volume ?? this.volume,
       fadeDuration: fadeDuration ?? this.fadeDuration,
@@ -174,6 +182,7 @@ class AlarmSettings {
         'dateTime': dateTime.microsecondsSinceEpoch,
         'assetAudioPath': assetAudioPath,
         'loopAudio': loopAudio,
+        'repeatSoundLoops': repeatSoundLoops,
         'vibrate': vibrate,
         'volume': volume,
         'fadeDuration': fadeDuration,
@@ -203,6 +212,7 @@ class AlarmSettings {
           dateTime == other.dateTime &&
           assetAudioPath == other.assetAudioPath &&
           loopAudio == other.loopAudio &&
+          repeatSoundLoops == other.repeatSoundLoops &&
           vibrate == other.vibrate &&
           volume == other.volume &&
           fadeDuration == other.fadeDuration &&

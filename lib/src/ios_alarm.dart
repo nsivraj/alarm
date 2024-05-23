@@ -41,6 +41,7 @@ class IOSAlarm {
               'assetAudio': settings.assetAudioPath,
               'delayInSeconds': delay,
               'loopAudio': settings.loopAudio,
+              'repeatSoundLoops': settings.repeatSoundLoops,
               'fadeDuration': settings.fadeDuration,
               'vibrate': settings.vibrate,
               'volume': settings.volume,

@@ -51,6 +51,7 @@ class AlarmService : Service() {
 
         val assetAudioPath = intent.getStringExtra("assetAudioPath") ?: return START_NOT_STICKY // Fallback if null
         val loopAudio = intent.getBooleanExtra("loopAudio", true)
+        val repeatSoundLoops = intent.getIntExtra("repeatSoundLoops", -1)
         val vibrate = intent.getBooleanExtra("vibrate", true)
         val volume = intent.getDoubleExtra("volume", -1.0)
         val fadeDuration = intent.getDoubleExtra("fadeDuration", 0.0)
@@ -95,7 +96,7 @@ class AlarmService : Service() {
             }
         }
 
-        audioService?.playAudio(id, assetAudioPath!!, loopAudio!!, fadeDuration!!)
+        audioService?.playAudio(id, assetAudioPath!!, loopAudio!!, repeatSoundLoops!!, fadeDuration!!)
 
         ringingAlarmIds = audioService?.getPlayingMediaPlayersIds()!!
 

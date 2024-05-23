@@ -75,6 +75,7 @@ public class SwiftAlarmPlugin: NSObject, FlutterPlugin {
               let id = args["id"] as? Int,
               let delayInSeconds = args["delayInSeconds"] as? Double,
               let loopAudio = args["loopAudio"] as? Bool,
+              let repeatSoundLoops = args["repeatSoundLoops"] as? Int,
               let fadeDuration = args["fadeDuration"] as? Double,
               let vibrationsEnabled = args["vibrate"] as? Bool,
               let assetAudio = args["assetAudio"] as? String else {
@@ -92,6 +93,7 @@ public class SwiftAlarmPlugin: NSObject, FlutterPlugin {
             assetAudio: assetAudio,
             vibrationsEnabled: vibrationsEnabled,
             loopAudio: loopAudio,
+            repeatSoundLoops: repeatSoundLoops,
             fadeDuration: fadeDuration,
             volume: volumeFloat
         )
@@ -123,7 +125,7 @@ public class SwiftAlarmPlugin: NSObject, FlutterPlugin {
                 let dateTime = Date().addingTimeInterval(delayInSeconds)
 
                 if loopAudio {
-                    audioPlayer.numberOfLoops = -1
+                    audioPlayer.numberOfLoops = repeatSoundLoops
                 }
 
                 audioPlayer.prepareToPlay()
@@ -254,6 +256,11 @@ public class SwiftAlarmPlugin: NSObject, FlutterPlugin {
 
                 if !alarm.loopAudio {
                     let audioDuration = audioPlayer.duration
+                    DispatchQueue.main.asyncAfter(deadline: .now() + audioDuration) {
+                        self.stopAlarm(id: id, cancelNotif: false, result: { _ in })
+                    }
+                } else if alarm.repeatSoundLoops != -1{
+                    let audioDuration = audioPlayer.duration * alarm.repeatSoundLoops
                     DispatchQueue.main.asyncAfter(deadline: .now() + audioDuration) {
                         self.stopAlarm(id: id, cancelNotif: false, result: { _ in })
                     }
