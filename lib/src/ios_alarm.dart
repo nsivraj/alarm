@@ -33,13 +33,15 @@ class IOSAlarm {
         // Do something
         // final int id = call.arguments['Nepal'];
         // final String arg2 = arguments['UK'];
-        print("The arguments are: ${call.arguments}");
+        print('The arguments are: ${call.arguments}');
         // print(arg2);
 
         final alarms = AlarmStorage.getSavedAlarms();
 
         for (final alarm in alarms) {
           if (alarm.id == call.arguments['id']) {
+            print(
+                'Letting the ring stream know about the event of stopping the alarm: ${alarm.id}');
             ringStream.add(
               alarm.copyWith(
                 dateTime: DateTime.fromMillisecondsSinceEpoch(0, isUtc: true),
@@ -49,8 +51,8 @@ class IOSAlarm {
           // await stop(alarm);
         }
 
-        print("\nOur Native iOS code is calling Flutter method/!!");
-        return "Awesome!!";
+        print('\nOur Native iOS code is calling Flutter method/!!');
+        return 'Awesome!!';
       // break;
       default:
         throw PlatformException(
