@@ -19,6 +19,7 @@ class AlarmSettings {
     this.enableNotificationOnKill = true,
     this.androidFullScreenIntent = true,
     this.snoozeDuration = 5,
+    this.autoRepeatDuration = 0,
   });
 
   /// Constructs an `AlarmSettings` instance from the given JSON data.
@@ -38,6 +39,7 @@ class AlarmSettings {
         androidFullScreenIntent:
             json['androidFullScreenIntent'] as bool? ?? true,
         snoozeDuration: json['snoozeDuration'] as int,
+        autoRepeatDuration: json['autoRepeatDuration'] as int,
       );
 
   /// Unique identifier assiocated with the alarm. Cannot be 0 or -1;
@@ -125,6 +127,8 @@ class AlarmSettings {
 
   final int snoozeDuration;
 
+  final int autoRepeatDuration;
+
   /// Returns a hash code for this `AlarmSettings` instance using
   /// Jenkins hash function.
   @override
@@ -143,6 +147,8 @@ class AlarmSettings {
     hash = hash ^ (notificationBody.hashCode);
     hash = hash ^ enableNotificationOnKill.hashCode;
     hash = hash ^ snoozeDuration.hashCode;
+    hash = hash ^ autoRepeatDuration.hashCode;
+
     hash = hash & 0x3fffffff;
 
     return hash;
@@ -164,6 +170,7 @@ class AlarmSettings {
     bool? enableNotificationOnKill,
     bool? androidFullScreenIntent,
     int? snoozeDuration,
+    int? autoRepeatDuration,
   }) {
     return AlarmSettings(
       id: id ?? this.id,
@@ -181,6 +188,7 @@ class AlarmSettings {
       androidFullScreenIntent:
           androidFullScreenIntent ?? this.androidFullScreenIntent,
       snoozeDuration: snoozeDuration ?? this.snoozeDuration,
+      autoRepeatDuration: autoRepeatDuration ?? this.autoRepeatDuration,
     );
   }
 
@@ -199,6 +207,7 @@ class AlarmSettings {
         'enableNotificationOnKill': enableNotificationOnKill,
         'androidFullScreenIntent': androidFullScreenIntent,
         'snoozeDuration': snoozeDuration,
+        'autoRepeatDuration': autoRepeatDuration,
       };
 
   /// Returns all the properties of `AlarmSettings` for debug purposes.
@@ -229,5 +238,6 @@ class AlarmSettings {
           notificationBody == other.notificationBody &&
           enableNotificationOnKill == other.enableNotificationOnKill &&
           androidFullScreenIntent == other.androidFullScreenIntent &&
-          snoozeDuration == other.snoozeDuration;
+          snoozeDuration == other.snoozeDuration &&
+          autoRepeatDuration == other.autoRepeatDuration;
 }
