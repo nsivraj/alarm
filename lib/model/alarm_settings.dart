@@ -7,6 +7,7 @@ class AlarmSettings {
   /// Model that contains all the settings to customize and set an alarm.
   const AlarmSettings({
     required this.id,
+    required this.alarmName,
     required this.dateTime,
     required this.assetAudioPath,
     required this.notificationTitle,
@@ -25,6 +26,7 @@ class AlarmSettings {
   /// Constructs an `AlarmSettings` instance from the given JSON data.
   factory AlarmSettings.fromJson(Map<String, dynamic> json) => AlarmSettings(
         id: json['id'] as int,
+        alarmName: json['alarmName'] as String,
         dateTime: DateTime.fromMicrosecondsSinceEpoch(json['dateTime'] as int),
         assetAudioPath: json['assetAudioPath'] as String,
         loopAudio: json['loopAudio'] as bool,
@@ -44,6 +46,8 @@ class AlarmSettings {
 
   /// Unique identifier assiocated with the alarm. Cannot be 0 or -1;
   final int id;
+
+  final String alarmName;
 
   /// Date and time when the alarm will be triggered.
   final DateTime dateTime;
@@ -136,6 +140,7 @@ class AlarmSettings {
     var hash = 0;
 
     hash = hash ^ id.hashCode;
+    hash = hash ^ alarmName.hashCode;
     hash = hash ^ dateTime.hashCode;
     hash = hash ^ assetAudioPath.hashCode;
     hash = hash ^ loopAudio.hashCode;
@@ -158,6 +163,7 @@ class AlarmSettings {
   /// the new values.
   AlarmSettings copyWith({
     int? id,
+    String? alarmName,
     DateTime? dateTime,
     String? assetAudioPath,
     bool? loopAudio,
@@ -174,6 +180,7 @@ class AlarmSettings {
   }) {
     return AlarmSettings(
       id: id ?? this.id,
+      alarmName: alarmName ?? this.alarmName,
       dateTime: dateTime ?? this.dateTime,
       assetAudioPath: assetAudioPath ?? this.assetAudioPath,
       loopAudio: loopAudio ?? this.loopAudio,
@@ -195,6 +202,7 @@ class AlarmSettings {
   /// Converts this `AlarmSettings` instance to JSON data.
   Map<String, dynamic> toJson() => {
         'id': id,
+        'alarmName': alarmName,
         'dateTime': dateTime.microsecondsSinceEpoch,
         'assetAudioPath': assetAudioPath,
         'loopAudio': loopAudio,
@@ -227,6 +235,7 @@ class AlarmSettings {
       other is AlarmSettings &&
           runtimeType == other.runtimeType &&
           id == other.id &&
+          alarmName == other.alarmName &&
           dateTime == other.dateTime &&
           assetAudioPath == other.assetAudioPath &&
           loopAudio == other.loopAudio &&

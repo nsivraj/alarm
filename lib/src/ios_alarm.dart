@@ -93,6 +93,7 @@ class IOSAlarm {
             'setAlarm',
             {
               'id': id,
+              'alarmName': settings.alarmName,
               'assetAudio': settings.assetAudioPath,
               'delayInSeconds': delay,
               'loopAudio': settings.loopAudio,

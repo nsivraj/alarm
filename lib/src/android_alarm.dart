@@ -59,6 +59,7 @@ class AndroidAlarm {
         'setAlarm',
         {
           'id': settings.id,
+          'alarmName': settings.alarmName,
           'delayInSeconds': delay.inSeconds,
           'assetAudioPath': settings.assetAudioPath,
           'loopAudio': settings.loopAudio,
