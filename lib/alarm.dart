@@ -58,7 +58,11 @@ class Alarm {
         final isRinging = await Alarm.isRinging(alarm.id);
         isRinging
             ? ringStream.add(
-                AlarmEvent(eventType: AlarmEventType.Ringing, alarm: alarm),
+                AlarmEvent(
+                  eventType: AlarmEventType.Ringing,
+                  eventSource: 'checkAlarm',
+                  alarm: alarm,
+                ),
               )
             : await stop(alarm);
       }
@@ -87,6 +91,7 @@ class Alarm {
         () => ringStream.add(
           AlarmEvent(
             eventType: AlarmEventType.CreateAlarm,
+            eventSource: 'setAlarmOnRingCallback',
             alarm: alarmSettings,
           ),
         ),
@@ -97,6 +102,7 @@ class Alarm {
         () => ringStream.add(
           AlarmEvent(
             eventType: AlarmEventType.CreateAlarm,
+            eventSource: 'setAlarmOnRingCallback',
             alarm: alarmSettings,
           ),
         ),
@@ -157,6 +163,7 @@ class Alarm {
     ringStream.add(
       AlarmEvent(
         eventType: AlarmEventType.RingingStopped,
+        eventSource: 'stop',
         alarm: alarm,
       ),
     );

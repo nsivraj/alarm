@@ -52,6 +52,7 @@ class IOSAlarm {
             ringStream.add(
               AlarmEvent(
                 eventType: AlarmEventType.RingingStopped,
+                eventSource: 'iosAlarmStoppedCallback',
                 alarm: alarm,
               ),
             );

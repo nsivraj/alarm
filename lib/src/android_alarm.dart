@@ -32,6 +32,7 @@ class AndroidAlarm {
             Alarm.ringStream.add(
               AlarmEvent(
                 eventType: AlarmEventType.Ringing,
+                eventSource: 'androidEventChannelOnData',
                 alarm: settings,
               ),
             );
