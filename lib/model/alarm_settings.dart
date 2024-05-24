@@ -18,6 +18,7 @@ class AlarmSettings {
     this.fadeDuration = 0.0,
     this.enableNotificationOnKill = true,
     this.androidFullScreenIntent = true,
+    this.snoozeDuration = 5,
   });
 
   /// Constructs an `AlarmSettings` instance from the given JSON data.
@@ -36,6 +37,7 @@ class AlarmSettings {
             json['enableNotificationOnKill'] as bool? ?? true,
         androidFullScreenIntent:
             json['androidFullScreenIntent'] as bool? ?? true,
+        snoozeDuration: json['snoozeDuration'] as int,
       );
 
   /// Unique identifier assiocated with the alarm. Cannot be 0 or -1;
@@ -121,6 +123,8 @@ class AlarmSettings {
   /// package.
   final bool androidFullScreenIntent;
 
+  final int snoozeDuration;
+
   /// Returns a hash code for this `AlarmSettings` instance using
   /// Jenkins hash function.
   @override
@@ -131,12 +135,14 @@ class AlarmSettings {
     hash = hash ^ dateTime.hashCode;
     hash = hash ^ assetAudioPath.hashCode;
     hash = hash ^ loopAudio.hashCode;
+    hash = hash ^ repeatSoundLoops.hashCode;
     hash = hash ^ vibrate.hashCode;
     hash = hash ^ volume.hashCode;
     hash = hash ^ fadeDuration.hashCode;
     hash = hash ^ (notificationTitle.hashCode);
     hash = hash ^ (notificationBody.hashCode);
     hash = hash ^ enableNotificationOnKill.hashCode;
+    hash = hash ^ snoozeDuration.hashCode;
     hash = hash & 0x3fffffff;
 
     return hash;
@@ -157,6 +163,7 @@ class AlarmSettings {
     String? notificationBody,
     bool? enableNotificationOnKill,
     bool? androidFullScreenIntent,
+    int? snoozeDuration,
   }) {
     return AlarmSettings(
       id: id ?? this.id,
@@ -173,6 +180,7 @@ class AlarmSettings {
           enableNotificationOnKill ?? this.enableNotificationOnKill,
       androidFullScreenIntent:
           androidFullScreenIntent ?? this.androidFullScreenIntent,
+      snoozeDuration: snoozeDuration ?? this.snoozeDuration,
     );
   }
 
@@ -190,6 +198,7 @@ class AlarmSettings {
         'notificationBody': notificationBody,
         'enableNotificationOnKill': enableNotificationOnKill,
         'androidFullScreenIntent': androidFullScreenIntent,
+        'snoozeDuration': snoozeDuration,
       };
 
   /// Returns all the properties of `AlarmSettings` for debug purposes.
@@ -219,5 +228,6 @@ class AlarmSettings {
           notificationTitle == other.notificationTitle &&
           notificationBody == other.notificationBody &&
           enableNotificationOnKill == other.enableNotificationOnKill &&
-          androidFullScreenIntent == other.androidFullScreenIntent;
+          androidFullScreenIntent == other.androidFullScreenIntent &&
+          snoozeDuration == other.snoozeDuration;
 }
