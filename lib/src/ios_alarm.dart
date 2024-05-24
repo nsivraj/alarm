@@ -106,6 +106,8 @@ class IOSAlarm {
                   AlarmStorage.getNotificationOnAppKillTitle(),
               'notifDescriptionOnAppKill':
                   AlarmStorage.getNotificationOnAppKillBody(),
+              'snoozeDuration': settings.snoozeDuration,
+              'autoRepeatDuration': settings.autoRepeatDuration,
             },
           ) ??
           false;

@@ -68,6 +68,8 @@ class AndroidAlarm {
           'notificationTitle': settings.notificationTitle,
           'notificationBody': settings.notificationBody,
           'fullScreenIntent': settings.androidFullScreenIntent,
+          'snoozeDuration': settings.snoozeDuration,
+          'autoRepeatDuration': settings.autoRepeatDuration,
         },
       );
     } catch (e) {
